@@ -1,0 +1,81 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+
+public partial class _Default : System.Web.UI.Page
+{
+    private static readonly int[] _pollIntervals = { 10000, 15000, 25000 };
+    private static readonly Random _rand = new Random();
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (!IsPostBack)
+        {
+            BindGrid();
+        }
+    }
+
+    protected void BindGrid()
+    {
+        gvHosts.DataSource = MonPanel.HostRepository.GetAll();
+        gvHosts.DataBind();
+    }
+
+    protected void btnAddHost_Click(object sender, EventArgs e)
+    {
+        string ipAddress = txtIPAddress.Text.Trim();
+        string port = txtPort.Text.Trim();
+        if (!string.IsNullOrEmpty(ipAddress) && !string.IsNullOrEmpty(port))
+        {
+            MonPanel.HostRepository.Add(ipAddress, port, txtAdditionalInfo.Text.Trim());
+
+            BindGrid();
+            txtIPAddress.Text = string.Empty;
+            txtPort.Text = string.Empty;
+            txtAdditionalInfo.Text = string.Empty;
+        }
+    }
+
+    protected void gvHosts_RowEditing(object sender, GridViewEditEventArgs e)
+    {
+        gvHosts.EditIndex = e.NewEditIndex;
+        BindGrid();
+    }
+
+    protected void gvHosts_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+    {
+        gvHosts.EditIndex = -1;
+        BindGrid();
+    }
+
+    protected void gvHosts_RowUpdating(object sender, GridViewUpdateEventArgs e)
+    {
+        string ipAddress = gvHosts.DataKeys[e.RowIndex].Value.ToString();
+        GridViewRow row = gvHosts.Rows[e.RowIndex];
+        string additionalInfo = ((TextBox)row.FindControl("txtEditAdditionalInfo")).Text.Trim();
+
+        MonPanel.HostRepository.Update(ipAddress, additionalInfo);
+
+        gvHosts.EditIndex = -1;
+        BindGrid();
+    }
+
+    protected void pollTimer_Tick(object sender, EventArgs e)
+    {
+        pollTimer.Interval = _pollIntervals[_rand.Next(_pollIntervals.Length)];
+
+        MonPanel.HostRepository.PollAll();
+        BindGrid();
+    }
+
+    protected void gvHosts_RowDeleting(object sender, GridViewDeleteEventArgs e)
+    {
+        string ipAddress = gvHosts.DataKeys[e.RowIndex].Value.ToString();
+        MonPanel.HostRepository.Delete(ipAddress);
+        BindGrid();
+    }
+}
