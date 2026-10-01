@@ -9,7 +9,6 @@ using System.Web.UI.WebControls;
 public partial class _Default : System.Web.UI.Page
 {
     private static readonly int[] _pollIntervals = { 10000, 15000, 25000 };
-    private static readonly Random _rand = new Random();
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -61,14 +60,6 @@ public partial class _Default : System.Web.UI.Page
         MonPanel.HostRepository.Update(ipAddress, additionalInfo);
 
         gvHosts.EditIndex = -1;
-        BindGrid();
-    }
-
-    protected void pollTimer_Tick(object sender, EventArgs e)
-    {
-        pollTimer.Interval = _pollIntervals[_rand.Next(_pollIntervals.Length)];
-
-        MonPanel.HostRepository.PollAll();
         BindGrid();
     }
 

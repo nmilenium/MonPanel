@@ -29,46 +29,40 @@
                     <asp:TextBox ID="txtAdditionalInfo" runat="server" />
                 </div>
                 <div class="col-md-1">
-                    <asp:Button ID="btnAddServer" runat="server" Text="Добавить сервер" CssClass="btn btn-dark" OnClick="btnAddHost_Click"/>
+                    <asp:Button ID="btnAddServer" runat="server" Text="Добавить сервер" CssClass="btn btn-dark" OnClick="btnAddHost_Click" />
                 </div>
             </div>
         </div>
         <div class="card p-3">
             <h3>Зарегистрированные серверы</h3>
             <div class="card-body p-0">
-                <asp:UpdatePanel ID="upHosts" runat="server" UpdateMode="Conditional">
-                    <ContentTemplate>
-                        <asp:GridView ID="gvHosts" runat="server" AutoGenerateColumns="False" 
-                            DataKeyNames="IpAddress"
-                            OnRowEditing="gvHosts_RowEditing" 
-                            OnRowCancelingEdit="gvHosts_RowCancelingEdit" 
-                            OnRowUpdating="gvHosts_RowUpdating" 
-                            OnRowDeleting="gvHosts_RowDeleting"
-                            CssClass="table table-striped table-hover mb-0 align-middle">
-                    <Columns>
-                        <asp:BoundField DataField="Hostname" HeaderText="Имя хоста" ReadOnly="True" />
-                        <asp:BoundField DataField="IpAddress" HeaderText="IP-адрес" ReadOnly="True" />
-                        <asp:BoundField DataField="Port" HeaderText="Порт" ReadOnly="True" />
-                        <asp:BoundField DataField="OsType" HeaderText="ОС" ReadOnly="True" />
-                        <asp:CheckBoxField DataField="IsOnline" HeaderText="Активен" ReadOnly="True" />
-                        <asp:BoundField DataField="LastUpdated" HeaderText="Последний опрос" ReadOnly="True" />
-                        <asp:TemplateField HeaderText="Дополнительная информация">
-                            <ItemTemplate>
-                                <%# Eval("AdditionalInfo") %>
-                            </ItemTemplate>
-                            <EditItemTemplate>
-                                <asp:TextBox ID="txtEditAdditionalInfo" runat="server" Text='<%# Bind("AdditionalInfo") %>'></asp:TextBox>
-                            </EditItemTemplate>
-                        </asp:TemplateField>
-                        <asp:CommandField ShowEditButton="True" ShowDeleteButton="True" ButtonType="Button"/>
-                    </Columns>
-                </asp:GridView>
-                    </ContentTemplate>
-                    <Triggers>
-                        <asp:AsyncPostBackTrigger ControlID="pollTimer" EventName="Tick" />
-                    </Triggers>
-                </asp:UpdatePanel>
-                <asp:Timer ID="pollTimer" runat="server" Interval="3000" OnTick="pollTimer_Tick" />
+                <contenttemplate>
+                    <asp:GridView ID="gvHosts" runat="server" AutoGenerateColumns="False"
+                        DataKeyNames="IpAddress"
+                        OnRowEditing="gvHosts_RowEditing"
+                        OnRowCancelingEdit="gvHosts_RowCancelingEdit"
+                        OnRowUpdating="gvHosts_RowUpdating"
+                        OnRowDeleting="gvHosts_RowDeleting"
+                        CssClass="table table-striped table-hover mb-0 align-middle">
+                        <Columns>
+                            <asp:BoundField DataField="Hostname" HeaderText="Имя хоста" ReadOnly="True" />
+                            <asp:BoundField DataField="IpAddress" HeaderText="IP-адрес" ReadOnly="True" />
+                            <asp:BoundField DataField="Port" HeaderText="Порт" ReadOnly="True" />
+                            <asp:BoundField DataField="OsType" HeaderText="ОС" ReadOnly="True" />
+                            <asp:CheckBoxField DataField="IsOnline" HeaderText="Активен" ReadOnly="True" />
+                            <asp:BoundField DataField="LastUpdated" HeaderText="Последний опрос" ReadOnly="True" />
+                            <asp:TemplateField HeaderText="Дополнительная информация">
+                                <ItemTemplate>
+                                    <%# Eval("AdditionalInfo") %>
+                                </ItemTemplate>
+                                <EditItemTemplate>
+                                    <asp:TextBox ID="txtEditAdditionalInfo" runat="server" Text='<%# Bind("AdditionalInfo") %>'></asp:TextBox>
+                                </EditItemTemplate>
+                            </asp:TemplateField>
+                            <asp:CommandField ShowEditButton="True" ShowDeleteButton="True" ButtonType="Button" />
+                        </Columns>
+                    </asp:GridView>
+                </contenttemplate>
             </div>
         </div>
     </form>
