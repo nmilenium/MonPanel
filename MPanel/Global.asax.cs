@@ -13,9 +13,7 @@ namespace MPanel
     {
         void Application_Start(object sender, EventArgs e)
         {
-            // Код, выполняемый при запуске приложения
-            // RouteConfig.RegisterRoutes(RouteTable.Routes);
-            // BundleConfig.RegisterBundles(BundleTable.Bundles);
+            
         }
     }
 }
